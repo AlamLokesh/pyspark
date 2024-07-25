@@ -34,6 +34,13 @@ if __name__ == "__main__":
           ORIGIN_CITY_NAME STRING, DEST STRING, DEST_CITY_NAME STRING, CRS_DEP_TIME INT, DEP_TIME INT, 
           WHEELS_ON INT, TAXI_IN INT, CRS_ARR_TIME INT, ARR_TIME INT, CANCELLED INT, DISTANCE INT"""
 
+    # CSV with inferred schema, this gives incorrect schema type for FL_DATE (string)
+    # flightTimeCsvDF = spark.read \
+    #     .format("csv") \
+    #     .option("header", "true") \
+    #     .option("inferSchema", "true") \
+    #     .load("data/flight*.csv")
+
     flightTimeCsvDF = spark.read \
         .format("csv") \
         .option("header", "true") \
@@ -45,6 +52,11 @@ if __name__ == "__main__":
     flightTimeCsvDF.show(5)
     logger.info("CSV Schema:" + flightTimeCsvDF.schema.simpleString())
 
+    # JSON with inferred schema, this gives incorrect schema type for FL_DATE (string)
+    # flightTimeJsonDF = spark.read \
+    #     .format("json") \
+    #     .load("data/flight*.json")
+
     flightTimeJsonDF = spark.read \
         .format("json") \
         .schema(flightSchemaDDL) \
@@ -54,9 +66,13 @@ if __name__ == "__main__":
     flightTimeJsonDF.show(5)
     logger.info("JSON Schema:" + flightTimeJsonDF.schema.simpleString())
 
+    # Parquet files include the schema, so no need to specify it
+    # There is a PyCharm plugin named "Avro and Parquet Viewer" you can install to view the parquet file schema/data.
     flightTimeParquetDF = spark.read \
         .format("parquet") \
         .load("data/flight*.parquet")
 
     flightTimeParquetDF.show(5)
     logger.info("Parquet Schema:" + flightTimeParquetDF.schema.simpleString())
+
+    spark.stop()

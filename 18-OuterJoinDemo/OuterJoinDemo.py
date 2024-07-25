@@ -41,6 +41,12 @@ if __name__ == "__main__":
 
     product_renamed_df = product_df.withColumnRenamed("qty", "reorder_qty")
 
+    order_df.join(product_renamed_df, join_expr, "outer") \
+        .drop(product_renamed_df.prod_id) \
+        .select("*") \
+        .sort("order_id") \
+        .show()
+
     order_df.join(product_renamed_df, join_expr, "left") \
         .drop(product_renamed_df.prod_id) \
         .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
@@ -48,3 +54,5 @@ if __name__ == "__main__":
         .withColumn("list_price", expr("coalesce(list_price, unit_price)")) \
         .sort("order_id") \
         .show()
+
+    spark.stop()

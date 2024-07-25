@@ -45,3 +45,5 @@ if __name__ == "__main__":
         .drop(product_renamed_df.prod_id) \
         .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
         .show()
+
+    spark.stop()

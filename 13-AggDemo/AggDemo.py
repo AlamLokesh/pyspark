@@ -49,3 +49,5 @@ if __name__ == "__main__":
              )
 
     summary_df.show()
+
+    spark.stop()

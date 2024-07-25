@@ -13,6 +13,10 @@ class UtilsTestCase(TestCase):
             .appName("HelloSparkTest") \
             .getOrCreate()
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.spark.stop()
+
     def test_datafile_loading(self):
         sample_df = load_survey_df(self.spark, "data/sample.csv")
         result_count = sample_df.count()
