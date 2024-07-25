@@ -19,6 +19,13 @@ if __name__ == "__main__":
     logger.info("Num Partitions before: " + str(flightTimeParquetDF.rdd.getNumPartitions()))
     flightTimeParquetDF.groupBy(spark_partition_id()).count().show()
 
+    # Writes only 1 file because all the records are in the partition 0 (even though there are 2 partitions)
+    # flightTimeParquetDF.write \
+    #     .format("avro") \
+    #     .mode("overwrite") \
+    #     .option("path", "dataSink/avro/") \
+    #     .save()
+
     partitionedDF = flightTimeParquetDF.repartition(5)
     logger.info("Num Partitions after: " + str(partitionedDF.rdd.getNumPartitions()))
     partitionedDF.groupBy(spark_partition_id()).count().show()
@@ -29,10 +36,13 @@ if __name__ == "__main__":
         .option("path", "dataSink/avro/") \
         .save()
 
-    flightTimeParquetDF.write \
-        .format("json") \
-        .mode("overwrite") \
-        .option("path", "dataSink/json/") \
-        .partitionBy("OP_CARRIER", "ORIGIN") \
-        .option("maxRecordsPerFile", 10000) \
-        .save()
+    # This will take some time to complete
+    (flightTimeParquetDF.write
+     .format("json")
+     .mode("overwrite")
+     .option("path", "dataSink/json/")
+     .partitionBy("OP_CARRIER", "ORIGIN")
+     .option("maxRecordsPerFile", 10000)  # Use this to control the number of records per file and file size
+     .save())
+
+    spark.stop()

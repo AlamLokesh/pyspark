@@ -46,3 +46,5 @@ if __name__ == "__main__":
 
     survey_df3 = survey_df.withColumn("Gender", expr("parse_gender_udf(Gender)"))
     survey_df3.show(10)
+
+    spark.stop()

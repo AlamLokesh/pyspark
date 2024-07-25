@@ -24,3 +24,5 @@ if __name__ == "__main__":
         .where(f.col("Rank") == 1) \
         .sort("Country", "WeekNumber") \
         .show()
+
+    spark.stop()

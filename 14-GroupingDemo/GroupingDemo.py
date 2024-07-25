@@ -36,3 +36,5 @@ if __name__ == "__main__":
         .save("output")
 
     exSummary_df.sort("Country", "WeekNumber").show()
+
+    spark.stop()

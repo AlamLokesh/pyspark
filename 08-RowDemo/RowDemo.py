@@ -31,3 +31,5 @@ if __name__ == "__main__":
     new_df = to_date_df(my_df, "M/d/y", "EventDate")
     new_df.printSchema()
     new_df.show()
+
+    spark.stop()

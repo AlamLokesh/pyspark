@@ -9,3 +9,18 @@
 *.crc
 *.parquet
 */*/_SUCCESS
+
+# JetBrains IDE
+.idea/
+
+# Spark-Programming-In-Python
+app-logs/
+metastore_db/
+spark-warehouse/
+derby.log
+
+# 05-DataSinkDemo
+05-DataSinkDemo/dataSink/
+
+# 14-GroupingDemo
+14-GroupingDemo/output/

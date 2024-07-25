@@ -18,9 +18,18 @@ if __name__ == "__main__":
                              regexp_extract('value', log_reg, 6).alias('request'),
                              regexp_extract('value', log_reg, 10).alias('referrer'))
 
+    logs_df.printSchema()
+
+    # Pre-transformation where hosts are not properly grouped
+    # logs_df.groupBy("referrer") \
+    #     .count() \
+    #     .show(100, truncate=False)
+
     logs_df \
         .where("trim(referrer) != '-' ") \
         .withColumn("referrer", substring_index("referrer", "/", 3)) \
         .groupBy("referrer") \
         .count() \
         .show(100, truncate=False)
+
+    spark.stop()
